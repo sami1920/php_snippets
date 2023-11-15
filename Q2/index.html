@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  </head>
+  <body>
+    <h2>Calculator</h2>
+
+    <label for="inputOne">Input One:</label>
+    <input type="text" id="inputOne" />
+
+    <label for="inputTwo">Input Two:</label>
+    <input type="text" id="inputTwo" />
+
+    <br />
+
+    <button onclick="calculate('plus')">Plus</button>
+    <button onclick="calculate('minus')">Minus</button>
+    <button onclick="calculate('multiply')">Multiply</button>
+    <button onclick="calculate('divide')">Divide</button>
+
+    <br />
+
+    <strong>RESULT:</strong> <span id="result"></span>
+
+    <script>
+      function isNumeric(value) {
+        return !isNaN(parseFloat(value)) && isFinite(value);
+      }
+
+      function calculate(operation) {
+        var inputOne = $("#inputOne").val();
+        var inputTwo = $("#inputTwo").val();
+
+        if (
+          !inputOne ||
+          !inputTwo ||
+          !isNumeric(inputOne) ||
+          !isNumeric(inputTwo)
+        ) {
+          alert("Please enter valid numeric values in both fields.");
+          return;
+        }
+
+        $.ajax({
+          url: "calculate.php",
+          type: "POST",
+          data: {
+            parameter_1: inputOne,
+            parameter_2: inputTwo,
+            operation: operation,
+          },
+          success: function (response) {
+            $("#result").text(response);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
